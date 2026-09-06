@@ -10,6 +10,14 @@ struct DisplayDimmer: App {
     @StateObject private var launchAtLogin = LaunchAtLoginManager()
     @StateObject private var brightnessStore = BrightnessStore()
 
+    // MARK: - App Info
+
+    private var appVersion: String {
+        Bundle.main.object(
+            forInfoDictionaryKey: "CFBundleShortVersionString"
+        ) as? String ?? "1.0.0"
+    }
+
     // MARK: - Reapply Brightness
 
     private func reapplyBrightness(after delay: Double = 0.5) {
@@ -32,7 +40,7 @@ struct DisplayDimmer: App {
 
     // MARK: - App
 
-    var body: some Scene {
+    var body: some  Scene {
 
         MenuBarExtra(
             "DisplayDimmer",
@@ -50,8 +58,15 @@ struct DisplayDimmer: App {
 
                     VStack(alignment: .leading, spacing: 2) {
 
-                        Text("DisplayDimmer")
-                            .font(.headline)
+                        HStack(spacing: 6) {
+
+                            Text("DisplayDimmer")
+                                .font(.headline)
+
+                            Text(appVersion)
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
 
                         Text("External display dimming")
                             .font(.caption)
@@ -102,8 +117,8 @@ struct DisplayDimmer: App {
                                 Text(
                                     "\(Int(brightnessStore.brightness(for: display) * 100))%"
                                 )
-                                    .monospacedDigit()
-                                    .foregroundStyle(.secondary)
+                                .monospacedDigit()
+                                .foregroundStyle(.secondary)
                             }
 
                             // Brightness slider
@@ -140,7 +155,7 @@ struct DisplayDimmer: App {
                                     .foregroundStyle(.secondary)
                             }
 
-                            // Reset
+                            // Reset this display
 
                             HStack {
 
@@ -157,6 +172,7 @@ struct DisplayDimmer: App {
                                     )
 
                                 } label: {
+
                                     Label(
                                         "Reset",
                                         systemImage: "arrow.counterclockwise"
@@ -190,6 +206,8 @@ struct DisplayDimmer: App {
                         .foregroundStyle(.red)
                 }
 
+                Divider()
+
                 // MARK: Bottom Controls
 
                 HStack {
@@ -200,6 +218,19 @@ struct DisplayDimmer: App {
                         Image(systemName: "arrow.clockwise")
                     }
                     .help("Refresh Displays")
+
+                    Button("Reset All") {
+
+                        dimmer.resetAll()
+
+                        for display in displayManager.displays
+                        where !display.isBuiltIn {
+
+                            brightnessStore.reset(
+                                for: display
+                            )
+                        }
+                    }
 
                     Spacer()
 
@@ -225,7 +256,6 @@ struct DisplayDimmer: App {
                     for: NSApplication.didChangeScreenParametersNotification
                 )
             ) { _ in
-
                 reapplyBrightness(after: 0.5)
             }
 
@@ -234,7 +264,6 @@ struct DisplayDimmer: App {
                     for: NSWorkspace.didWakeNotification
                 )
             ) { _ in
-
                 reapplyBrightness(after: 1.0)
             }
         }
