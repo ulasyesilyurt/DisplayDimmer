@@ -3,7 +3,7 @@
 A lightweight macOS menu bar utility for dimming external displays beyond their comfortable minimum brightness.
 
 <p align="center">
-  <img src="docs/images/displaydimmer-menu.png" width="420" alt="DisplayDimmer menu">
+  <img src="docs/images/displaydimmer-menu-v2.png" width="420" alt="DisplayDimmer menu">
 </p>
 
 ## Features
