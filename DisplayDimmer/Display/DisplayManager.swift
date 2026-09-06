@@ -6,6 +6,7 @@ struct DisplayInfo: Identifiable {
     let id: CGDirectDisplayID
     let name: String
     let isBuiltIn: Bool
+    let persistentID: String
 }
 
 @MainActor
@@ -32,10 +33,18 @@ final class DisplayManager: ObservableObject {
                 screenNumber.uint32Value
             )
 
+            let vendor = CGDisplayVendorNumber(displayID)
+            let model = CGDisplayModelNumber(displayID)
+            let serial = CGDisplaySerialNumber(displayID)
+            let unit = CGDisplayUnitNumber(displayID)
+
+            let persistentID = "\(vendor)-\(model)-\(serial)-\(unit)"
+
             return DisplayInfo(
                 id: displayID,
                 name: screen.localizedName,
-                isBuiltIn: CGDisplayIsBuiltin(displayID) != 0
+                isBuiltIn: CGDisplayIsBuiltin(displayID) != 0,
+                persistentID: persistentID
             )
         }
     }

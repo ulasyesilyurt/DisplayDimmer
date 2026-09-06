@@ -8,9 +8,7 @@ struct DisplayDimmer: App {
     @StateObject private var displayManager = DisplayManager()
     @StateObject private var dimmer = DimmerController()
     @StateObject private var launchAtLogin = LaunchAtLoginManager()
-
-    @AppStorage("displayDimmerBrightness")
-    private var brightness: Double = 1.0
+    @StateObject private var brightnessStore = BrightnessStore()
 
     // MARK: - Reapply Brightness
 
@@ -20,8 +18,12 @@ struct DisplayDimmer: App {
             displayManager.refreshDisplays()
 
             for display in displayManager.displays where !display.isBuiltIn {
+
+                let savedBrightness =
+                    brightnessStore.brightness(for: display)
+
                 dimmer.setBrightness(
-                    brightness,
+                    savedBrightness,
                     for: display.id
                 )
             }
@@ -43,7 +45,7 @@ struct DisplayDimmer: App {
 
                 HStack {
 
-                    Image(systemName: "moon.stars.fill")
+                    Image(systemName: "display")
                         .font(.title2)
 
                     VStack(alignment: .leading, spacing: 2) {
@@ -97,7 +99,9 @@ struct DisplayDimmer: App {
 
                                 Spacer()
 
-                                Text("\(Int(brightness * 100))%")
+                                Text(
+                                    "\(Int(brightnessStore.brightness(for: display) * 100))%"
+                                )
                                     .monospacedDigit()
                                     .foregroundStyle(.secondary)
                             }
@@ -112,11 +116,16 @@ struct DisplayDimmer: App {
                                 Slider(
                                     value: Binding(
                                         get: {
-                                            brightness
+                                            brightnessStore.brightness(
+                                                for: display
+                                            )
                                         },
                                         set: { newValue in
 
-                                            brightness = newValue
+                                            brightnessStore.setBrightness(
+                                                newValue,
+                                                for: display
+                                            )
 
                                             dimmer.setBrightness(
                                                 newValue,
@@ -138,11 +147,14 @@ struct DisplayDimmer: App {
                                 Spacer()
 
                                 Button {
+
                                     dimmer.reset(
                                         displayID: display.id
                                     )
 
-                                    brightness = 1.0
+                                    brightnessStore.reset(
+                                        for: display
+                                    )
 
                                 } label: {
                                     Label(
