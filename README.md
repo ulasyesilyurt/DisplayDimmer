@@ -56,4 +56,4 @@ DisplayDimmer is currently in active development.
 
 ## License
 
-A license will be added before the first public release.
+DisplayDimmer is available under the [MIT License](LICENSE).
