@@ -6,6 +6,10 @@ A lightweight macOS menu bar utility for dimming external displays beyond their 
   <img src="docs/images/displaydimmer-menu-v2.png" width="420" alt="DisplayDimmer menu">
 </p>
 
+## Download
+
+Download the latest release from the [Releases](https://github.com/ulasyesilyurt/DisplayDimmer/releases) page.
+
 ## Features
 
 - Detects connected external displays
