@@ -10,6 +10,8 @@ A lightweight macOS menu bar utility for dimming external displays beyond their 
 
 Download the latest version from the [Releases](https://github.com/ulasyesilyurt/DisplayDimmer/releases) page.
 
+For the easiest installation, download the `.dmg` file, open it, and drag **DisplayDimmer** into the **Applications** folder.
+
 ## Features
 
 - Detects connected external displays
@@ -23,10 +25,10 @@ Download the latest version from the [Releases](https://github.com/ulasyesilyurt
 
 ## Installation
 
-1. Download `DisplayDimmer-v1.0.0.zip` from the [Releases](https://github.com/ulasyesilyurt/DisplayDimmer/releases) page.
-2. Extract the archive.
-3. Move `DisplayDimmer.app` to the Applications folder.
-4. Open DisplayDimmer.
+1. Download `DisplayDimmer-v1.0.0.dmg` from the [Releases](https://github.com/ulasyesilyurt/DisplayDimmer/releases) page.
+2. Open the DMG.
+3. Drag **DisplayDimmer** into the **Applications** folder.
+4. Open DisplayDimmer from Applications.
 
 > DisplayDimmer is currently not notarized with an Apple Developer ID.  
 > macOS may block the first launch. If that happens, go to **System Settings → Privacy & Security → Open Anyway**.
